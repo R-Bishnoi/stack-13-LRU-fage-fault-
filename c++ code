@@ -1,0 +1,74 @@
+class Solution{
+public:
+
+
+    int pageFaults(int n, int C, int arr[]){
+       
+     unordered_map<int,int>mp;
+     set<int>st;
+   
+   int fault=0;  
+     
+ for(int i=0;i<n;i++){
+   
+   
+//step 1   
+  if(i<C && st.find(arr[i])==st.end()){
+     st.insert(arr[i]);
+     mp[arr[i]]=i;
+     fault++;
+ } 
+ 
+
+
+//step 2 also check that set is empty or not 
+if(st.size()<C){
+    if(st.find(arr[i])==st.end()){
+        st.insert(arr[i]);
+        mp[arr[i]]=i;
+        fault++;
+    }
+    
+    else{
+        mp[arr[i]]=i;
+    }
+}
+
+
+
+//set is full
+ if(st.size()>=C&&st.find(arr[i])==st.end()){
+    
+    int index=INT_MAX; 
+    int b;
+ for(auto x: st){
+   
+    if(mp[x]<index){
+        index=mp[x];
+        b=x;
+    }
+     
+ }
+     
+ st.erase(b);
+ st.insert(arr[i]);
+ mp[arr[i]]=i;
+ fault++;
+     
+ }
+ 
+
+ //step 4
+ //this is known as page hit so we cannot increment fault
+ if(st.find(arr[i])!=st.end()){
+   
+   mp[arr[i]]=i; 
+ }
+ 
+}
+
+  return fault;     
+        
+    }
+    
+};
